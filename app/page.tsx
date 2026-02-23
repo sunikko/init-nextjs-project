@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ProductCarousel } from '@/components/customer/product-carousel'
 
 export default function Home() {
   return (
@@ -53,6 +54,19 @@ export default function Home() {
               자세히 알아보기
             </a>
           </div>
+        </div>
+
+        {/* 상품 Carousel 섹션 */}
+        <div className="mt-20 py-12">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50 mb-4">
+              인기 클래스
+            </h2>
+            <p className="text-lg text-zinc-600 dark:text-zinc-400">
+              지금 가장 인기 있는 클래스들을 확인해보세요
+            </p>
+          </div>
+          <ProductCarousel />
         </div>
 
         {/* 특징 섹션 */}
