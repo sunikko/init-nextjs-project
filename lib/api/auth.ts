@@ -94,3 +94,86 @@ export async function check_email_exists(email: string): Promise<boolean> {
     return false
   }
 }
+
+// 로그인
+export async function sign_in(email: string, password: string): Promise<AuthResponse> {
+  try {
+    const { data: auth_data, error: auth_error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (auth_error) {
+      console.error('로그인 에러:', auth_error.message)
+      return {
+        success: false,
+        message: auth_error.message || 'Invalid email or password.',
+        error: auth_error.message,
+      }
+    }
+
+    if (auth_data.user) {
+      return {
+        success: true,
+        message: 'Login successful!',
+        user_id: auth_data.user.id,
+      }
+    }
+
+    return {
+      success: false,
+      message: 'Login failed.',
+    }
+  } catch (error) {
+    console.error('sign_in 에러:', error)
+    return {
+      success: false,
+      message: 'An unexpected error occurred.',
+      error: String(error),
+    }
+  }
+}
+
+// 로그아웃
+export async function sign_out(): Promise<AuthResponse> {
+  try {
+    const { error } = await supabase.auth.signOut()
+
+    if (error) {
+      console.error('로그아웃 에러:', error.message)
+      return {
+        success: false,
+        message: 'Logout failed.',
+        error: error.message,
+      }
+    }
+
+    return {
+      success: true,
+      message: 'Logout successful!',
+    }
+  } catch (error) {
+    console.error('sign_out 에러:', error)
+    return {
+      success: false,
+      message: 'An unexpected error occurred.',
+      error: String(error),
+    }
+  }
+}
+
+// 현재 사용자 정보 조회
+export async function get_current_user() {
+  try {
+    const { data, error } = await supabase.auth.getUser()
+
+    if (error || !data.user) {
+      return null
+    }
+
+    return data.user
+  } catch (error) {
+    console.error('get_current_user 에러:', error)
+    return null
+  }
+}
