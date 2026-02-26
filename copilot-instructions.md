@@ -197,6 +197,18 @@ lib/
 - Best Practice: 'use client' 최소화, Server Components 선호
 - Libraries: date-fns, TanStack Query, Zustand, react-use, lucide-react, nuqs
 
+### 3. 페이지 언어 규칙 ✨ **NEW**
+- **사용자 인터페이스(UI):** 모든 새로 생성되는 페이지는 **영문(English)으로만 작성**
+  - 헤더, 버튼, 라벨, 에러 메시지, 알림 등 모두 영문
+  - 예: "Welcome to BookingHub", "Book Now", "Please select a date"
+- **코드 주석:** 한국어로 유지 (깃 히스토리 호환성)
+  - 예: `// 사용자 정보 저장`, `// 상품 조회 에러`
+- **변수명/함수명:** 영문으로만 작성
+  - 예: `is_loading`, `handle_submit`, `fetch_all_products`
+- **마이그레이션 규칙:**
+  - 기존 한글 코드는 유지
+  - 새로운 페이지/컴포넌트는 100% 영문으로 작성
+
 ---
 
 ## 📝 Documentation & Error Handling
@@ -229,3 +241,4 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 3. 변수명에 언더스코어(_)를 사용했는가? (retry_count 등)
 4. PostgreSQL 문법에서 AS $$ 와 %ROWTYPE의 공백을 제거했는가?
 5. 모든 Toast/Console 메시지는 영어로 작성했는가?
+6. **새로운 페이지는 UI 텍스트가 100% 영문인가?** ✨
