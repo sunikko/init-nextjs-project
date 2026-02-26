@@ -61,12 +61,12 @@ export function ReservationModal({
           {/* 헤더 */}
           <div className="flex items-center justify-between p-6 border-b border-zinc-200 dark:border-zinc-800">
             <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
-              예약 정보 입력
+              Enter Booking Information
             </h2>
             <button
               onClick={on_close}
               className="rounded-lg p-1 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
-              aria-label="닫기"
+              aria-label="Close"
             >
               <X className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
             </button>
@@ -77,7 +77,7 @@ export function ReservationModal({
             {/* 상품명 */}
             <div>
               <label className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
-                클래스명
+                Class Name
               </label>
               <p className="text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900 rounded-lg p-3">
                 {product_title}
@@ -87,10 +87,10 @@ export function ReservationModal({
             {/* 선택된 날짜 */}
             <div>
               <label className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
-                예약 날짜
+                Booking Date
               </label>
               <p className="text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900 rounded-lg p-3">
-                {selected_date.toLocaleDateString('ko-KR', {
+                {selected_date.toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -102,14 +102,14 @@ export function ReservationModal({
             {/* 참여자 수 */}
             <div>
               <label htmlFor="participant-count" className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
-                참여자 수 (최대 {max_participants}명)
+                Number of Participants (Max {max_participants})
               </label>
               <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => set_participant_count(Math.max(1, participant_count - 1))}
                   className="rounded-lg bg-zinc-200 dark:bg-zinc-800 px-4 py-2 text-zinc-900 dark:text-zinc-50 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors"
-                  aria-label="참여자 수 감소"
+                  aria-label="Decrease participant count"
                 >
                   −
                 </button>
@@ -129,7 +129,7 @@ export function ReservationModal({
                   type="button"
                   onClick={() => set_participant_count(Math.min(max_participants, participant_count + 1))}
                   className="rounded-lg bg-zinc-200 dark:bg-zinc-800 px-4 py-2 text-zinc-900 dark:text-zinc-50 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors"
-                  aria-label="참여자 수 증가"
+                  aria-label="Increase participant count"
                 >
                   +
                 </button>
@@ -139,13 +139,13 @@ export function ReservationModal({
             {/* 특별 요청사항 */}
             <div>
               <label htmlFor="special-request" className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
-                특별 요청사항 (선택사항)
+                Special Requests (Optional)
               </label>
               <textarea
                 id="special-request"
                 value={special_request}
                 onChange={(e) => set_special_request(e.target.value)}
-                placeholder="음식 알레르기, 신체 제약사항 등을 입력해주세요..."
+                placeholder="Please enter any food allergies, physical limitations, etc..."
                 className="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 px-4 py-3 text-zinc-900 dark:text-zinc-50 placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-50"
                 rows={3}
               />
@@ -170,13 +170,13 @@ export function ReservationModal({
                 onClick={on_close}
                 className="flex-1 rounded-lg border border-zinc-300 dark:border-zinc-700 px-4 py-3 text-sm font-medium text-zinc-900 dark:text-zinc-50 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
               >
-                취소
+                Cancel
               </button>
               <button
                 type="submit"
                 className="flex-1 rounded-lg bg-zinc-900 dark:bg-zinc-50 px-4 py-3 text-sm font-medium text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
               >
-                예약하기
+                Book Now
               </button>
             </div>
           </form>

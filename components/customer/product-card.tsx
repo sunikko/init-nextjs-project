@@ -63,7 +63,7 @@ export function ProductCard({
               </span>
             </div>
             <span className="text-xs text-zinc-500 dark:text-zinc-500">
-              ({review_count}개 리뷰)
+              ({review_count} reviews)
             </span>
           </div>
 

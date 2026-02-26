@@ -57,7 +57,7 @@ export function ProductCarousel() {
         <div className="relative bg-white dark:bg-zinc-950 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-lg p-12">
           <div className="text-center">
             <p className="text-zinc-600 dark:text-zinc-400">
-              {loading ? '상품 로드 중...' : '상품이 없습니다'}
+              {loading ? 'Loading products...' : 'No products available'}
             </p>
           </div>
         </div>
@@ -107,11 +107,11 @@ export function ProductCarousel() {
             <div className="flex items-center gap-6 mb-6 text-sm text-zinc-600 dark:text-zinc-400">
               <div className="flex items-center gap-2">
                 <span>⏱️</span>
-                <span>{current_product.duration}분</span>
+                <span>{current_product.duration} min</span>
               </div>
               <div className="flex items-center gap-2">
                 <span>👥</span>
-                <span>최대 {current_product.max_participants}명</span>
+                <span>Max {current_product.max_participants} people</span>
               </div>
             </div>
 
@@ -124,7 +124,7 @@ export function ProductCarousel() {
                 href={`/products/${current_product.slug}`}
                 className="inline-flex items-center justify-center rounded-lg bg-zinc-900 px-6 py-3 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-200 transition-colors"
               >
-                자세히 보기
+                View Details
               </Link>
             </div>
           </div>
@@ -134,7 +134,7 @@ export function ProductCarousel() {
         <button
           onClick={handle_prev}
           className="absolute left-4 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 dark:bg-zinc-800/80 p-2 hover:bg-white dark:hover:bg-zinc-700 transition-colors"
-          aria-label="이전 상품"
+          aria-label="Previous product"
         >
           <ChevronLeft className="w-6 h-6 text-zinc-900 dark:text-zinc-50" />
         </button>
@@ -142,7 +142,7 @@ export function ProductCarousel() {
         <button
           onClick={handle_next}
           className="absolute right-4 top-1/2 -translate-y-1/2 z-10 rounded-full bg-white/80 dark:bg-zinc-800/80 p-2 hover:bg-white dark:hover:bg-zinc-700 transition-colors"
-          aria-label="다음 상품"
+          aria-label="Next product"
         >
           <ChevronRight className="w-6 h-6 text-zinc-900 dark:text-zinc-50" />
         </button>
@@ -159,7 +159,7 @@ export function ProductCarousel() {
                 ? 'bg-zinc-900 dark:bg-zinc-50'
                 : 'bg-zinc-300 dark:bg-zinc-700'
             }`}
-            aria-label={`${index + 1}번 상품으로 이동`}
+            aria-label={`Go to product ${index + 1}`}
           />
         ))}
       </div>

@@ -22,19 +22,19 @@ export default function CustomerLayout({
                 href="/products"
                 className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
               >
-                상품
+                Products
               </Link>
               <Link
                 href="/login"
                 className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
               >
-                로그인
+                Login
               </Link>
               <Link
                 href="/signup"
                 className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-200"
               >
-                회원가입
+                Sign Up
               </Link>
             </div>
           </nav>

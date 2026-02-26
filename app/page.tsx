@@ -19,13 +19,13 @@ export default function Home() {
                 href="/login"
                 className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
               >
-                로그인
+                Login
               </Link>
               <Link
                 href="/signup"
                 className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-200"
               >
-                회원가입
+                Sign Up
               </Link>
             </div>
           </nav>
@@ -36,10 +36,10 @@ export default function Home() {
       <main className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-6xl">
-            당신의 열정을 발견하세요
+            Discover Your Passion
           </h1>
           <p className="mt-6 text-xl text-zinc-600 dark:text-zinc-400">
-            다양한 클래스와 워크숍을 통해 새로운 기술을 배우고 경험해보세요
+            Learn new skills and experience through various classes and workshops
           </p>
 
           {/* CTA 버튼 */}
@@ -48,13 +48,13 @@ export default function Home() {
               href="/products"
               className="inline-flex items-center justify-center rounded-lg bg-zinc-900 px-8 py-3 text-lg font-medium text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-200 transition-colors"
             >
-              지금 시작하기
+              Get Started Now
             </Link>
             <a
               href="#features"
               className="inline-flex items-center justify-center rounded-lg border border-zinc-300 px-8 py-3 text-lg font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900 transition-colors"
             >
-              자세히 알아보기
+              Learn More
             </a>
           </div>
         </div>
@@ -63,10 +63,10 @@ export default function Home() {
         <div className="mt-20 py-12">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50 mb-4">
-              인기 클래스
+              Popular Classes
             </h2>
             <p className="text-lg text-zinc-600 dark:text-zinc-400">
-              지금 가장 인기 있는 클래스들을 확인해보세요
+              Check out the most popular classes right now
             </p>
           </div>
           <ProductCarousel />
@@ -76,16 +76,16 @@ export default function Home() {
         <div id="features" className="mt-20 grid grid-cols-1 gap-8 md:grid-cols-3">
           {[
             {
-              title: '다양한 클래스',
-              description: '요가, 요리, 댄스 등 다양한 분야의 클래스를 선택할 수 있습니다',
+              title: 'Variety of Classes',
+              description: 'Choose from a wide range of classes including yoga, cooking, dance, and more',
             },
             {
-              title: '쉬운 예약',
-              description: '캘린더에서 원하는 날짜와 시간을 선택하여 쉽게 예약하세요',
+              title: 'Easy Booking',
+              description: 'Simply select your desired date and time on the calendar to book',
             },
             {
-              title: '안전한 결제',
-              description: '안전한 결제 시스템으로 믿고 이용할 수 있습니다',
+              title: 'Secure Payment',
+              description: 'Use our secure payment system with confidence',
             },
           ].map((feature, index) => (
             <div

@@ -26,14 +26,14 @@ export default function ProductDetailPage() {
       set_error_message(null)
 
       if (!slug) {
-        set_error_message('잘못된 상품 경로입니다.')
+        set_error_message('Invalid product path.')
         set_is_loading(false)
         return
       }
 
       const data = await fetch_product_by_slug(slug)
       if (!data) {
-        set_error_message('상품을 찾을 수 없습니다.')
+        set_error_message('Product not found.')
       }
       set_product(data)
       set_is_loading(false)
@@ -49,7 +49,7 @@ export default function ProductDetailPage() {
   // 예약 모달 열기
   const handle_open_modal = () => {
     if (!selected_date) {
-      alert('날짜를 선택해주세요.')
+      alert('Please select a date.')
       return
     }
     set_is_modal_open(true)
@@ -57,13 +57,13 @@ export default function ProductDetailPage() {
 
   // 예약 제출
   const handle_reservation_submit = (data: ReservationData) => {
-    console.log('예약 정보:', {
+    console.log('Reservation info:', {
       product_id: product?.id,
       product_title: product?.title,
       date: selected_date?.toISOString(),
       ...data,
     })
-    alert(`예약이 완료되었습니다!\n총 가격: ₩${data.total_price.toLocaleString()}`)
+    alert(`Booking completed!\nTotal Price: ₩${data.total_price.toLocaleString()}`)
     set_is_modal_open(false)
     set_selected_date(null)
   }
@@ -75,7 +75,7 @@ export default function ProductDetailPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-zinc-900 dark:border-zinc-50"></div>
-            <p className="mt-4 text-zinc-600 dark:text-zinc-400">상품을 불러오는 중...</p>
+            <p className="mt-4 text-zinc-600 dark:text-zinc-400">Loading product...</p>
           </div>
         </div>
       </div>
@@ -89,16 +89,16 @@ export default function ProductDetailPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-              상품을 찾을 수 없습니다
+              Product Not Found
             </h1>
             <p className="mt-4 text-zinc-600 dark:text-zinc-400">
-              {error_message || '요청하신 상품이 존재하지 않습니다.'}
+              {error_message || 'The product you requested does not exist.'}
             </p>
             <Link
               href="/products"
               className="mt-6 inline-flex items-center justify-center rounded-lg bg-zinc-900 px-6 py-3 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-200"
             >
-              상품 목록으로 돌아가기
+              Back to Products
             </Link>
           </div>
         </div>
@@ -115,7 +115,7 @@ export default function ProductDetailPage() {
           className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
-          상품 목록으로 돌아가기
+          Back to Products
         </Link>
 
         {/* 메인 컨텐츠 */}
@@ -144,7 +144,7 @@ export default function ProductDetailPage() {
                   {product.rating}
                 </span>
                 <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                  ({product.review_count}개 리뷰)
+                  ({product.review_count} reviews)
                 </span>
               </div>
             </div>
@@ -168,7 +168,7 @@ export default function ProductDetailPage() {
                 <div className="flex items-center gap-2 mb-2">
                   <Clock className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
                   <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                    소요 시간
+                    Duration
                   </span>
                 </div>
                 <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
@@ -180,7 +180,7 @@ export default function ProductDetailPage() {
                 <div className="flex items-center gap-2 mb-2">
                   <Users className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
                   <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                    최대 참여자
+                    Max Participants
                   </span>
                 </div>
                 <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
@@ -190,7 +190,7 @@ export default function ProductDetailPage() {
 
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-900">
                 <span className="text-xs font-medium text-blue-800 dark:text-blue-200 block mb-2">
-                  1인당 가격
+                  Price Per Person
                 </span>
                 <p className="text-2xl font-bold text-blue-900 dark:text-blue-50">
                   ₩{product.price.toLocaleString()}
@@ -201,13 +201,13 @@ export default function ProductDetailPage() {
             {/* 가격 */}
             <div className="mb-8 p-6 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 rounded-lg border border-zinc-200 dark:border-zinc-800">
               <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-2">
-                최종 예상 가격
+                Estimated Total Price
               </p>
               <p className="text-5xl font-bold text-zinc-900 dark:text-zinc-50">
                 {selected_date ? (
                   <>₩{product.price.toLocaleString()}</>
                 ) : (
-                  <>날짜를 선택하세요</>
+                  <>Select a date</>
                 )}
               </p>
             </div>
@@ -219,7 +219,7 @@ export default function ProductDetailPage() {
           {/* 캘린더 */}
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-6">
-              예약 날짜 선택
+              Select Booking Date
             </h2>
             <BookingCalendar
               on_date_select={set_selected_date}
@@ -230,14 +230,14 @@ export default function ProductDetailPage() {
           {/* 예약 정보 */}
           <div>
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-6">
-              예약 요약
+              Booking Summary
             </h2>
 
             <div className="bg-white dark:bg-zinc-950 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6 sticky top-6 space-y-4">
               {/* 클래스명 */}
               <div>
                 <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wide mb-1">
-                  클래스명
+                  Class Name
                 </p>
                 <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
                   {product.title}
@@ -247,17 +247,17 @@ export default function ProductDetailPage() {
               {/* 선택된 날짜 */}
               <div className="border-t border-zinc-200 dark:border-zinc-800 pt-4">
                 <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wide mb-1">
-                  예약 날짜
+                  Booking Date
                 </p>
                 <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
                   {selected_date
-                    ? selected_date.toLocaleDateString('ko-KR', {
+                    ? selected_date.toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
                         weekday: 'short',
                       })
-                    : '미선택'}
+                    : 'Not Selected'}
                 </p>
               </div>
 
@@ -271,13 +271,13 @@ export default function ProductDetailPage() {
                     : 'bg-zinc-200 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-600 cursor-not-allowed'
                 }`}
               >
-                예약하기
+                Book Now
               </button>
 
               {/* 안내 메시지 */}
               {!selected_date && (
                 <p className="text-xs text-zinc-500 dark:text-zinc-500 text-center">
-                  날짜를 선택한 후 예약할 수 있습니다
+                  You can book after selecting a date
                 </p>
               )}
             </div>

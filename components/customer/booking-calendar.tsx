@@ -75,7 +75,7 @@ export function BookingCalendar({ on_date_select, selected_date }: BookingCalend
         <button
           onClick={handle_prev_month}
           className="rounded-lg p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
-          aria-label="이전 달"
+          aria-label="Previous month"
         >
           <ChevronLeft className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
         </button>
@@ -87,7 +87,7 @@ export function BookingCalendar({ on_date_select, selected_date }: BookingCalend
         <button
           onClick={handle_next_month}
           className="rounded-lg p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
-          aria-label="다음 달"
+          aria-label="Next month"
         >
           <ChevronRight className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
         </button>
@@ -131,8 +131,8 @@ export function BookingCalendar({ on_date_select, selected_date }: BookingCalend
       {selected_date && (
         <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-900">
           <p className="text-sm text-blue-900 dark:text-blue-200">
-            <span className="font-semibold">선택된 날짜:</span>{' '}
-            {selected_date.toLocaleDateString('ko-KR', {
+            <span className="font-semibold">Selected Date:</span>{' '}
+            {selected_date.toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
