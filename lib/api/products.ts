@@ -122,9 +122,36 @@ export async function fetch_products_by_category(category: string): Promise<Prod
       throw error
     }
 
-    return data || []
+    // 기본값 설정
+    return (data || []).map((product) => ({
+      ...product,
+      rating: product.rating || 4.5,
+      review_count: product.review_count || 0,
+    }))
   } catch (error) {
     console.error('fetch_products_by_category 에러:', error)
+    return []
+  }
+}
+
+// 모든 고유 카테고리 조회
+export async function fetch_all_categories(): Promise<string[]> {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('category')
+      .eq('is_active', true)
+
+    if (error) {
+      console.error('카테고리 조회 에러:', error.message)
+      throw error
+    }
+
+    // 고유한 카테고리만 추출 후 정렬
+    const categories = Array.from(new Set((data || []).map((p) => p.category))).sort()
+    return categories
+  } catch (error) {
+    console.error('fetch_all_categories 에러:', error)
     return []
   }
 }
