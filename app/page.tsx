@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ProductCarousel } from '@/components/customer/product-carousel'
+import { Header } from '@/components/common/header'
 import { ApiTestComponent } from '@/components/dev/api-test'
 
 export default function Home() {
@@ -7,30 +8,9 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-black dark:to-zinc-950">
       {/* 개발용 API 테스트 패널 */}
       <ApiTestComponent />
+      
       {/* 헤더 네비게이션 */}
-      <header className="border-b border-zinc-200 bg-white/50 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/50">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-              BookingHub
-            </div>
-            <div className="flex items-center gap-4">
-              <Link
-                href="/login"
-                className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
-              >
-                Login
-              </Link>
-              <Link
-                href="/signup"
-                className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-200"
-              >
-                Sign Up
-              </Link>
-            </div>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       {/* 메인 히어로 섹션 */}
       <main className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
