@@ -6,28 +6,41 @@ import Link from 'next/link'
 import { Star, ArrowLeft, MapPin, Users, Clock } from 'lucide-react'
 import { BookingCalendar } from '@/components/customer/booking-calendar'
 import { ReservationModal, type ReservationData } from '@/components/customer/reservation-modal'
-import { fetch_product_by_id } from '@/lib/api/products'
+import { fetch_product_by_slug } from '@/lib/api/products'
 import { useParams } from 'next/navigation'
 import type { Product } from '@/lib/api/products'
 
 export default function ProductDetailPage() {
   const params = useParams()
-  const product_id = params.productId as string
+  const slug = params.slug as string
 
   // 상품 및 로딩 상태
   const [product, set_product] = useState<Product | null>(null)
   const [is_loading, set_is_loading] = useState(true)
+  const [error_message, set_error_message] = useState<string | null>(null)
 
   // Supabase에서 상품 데이터 가져오기
   useEffect(() => {
     const load_product = async () => {
       set_is_loading(true)
-      const data = await fetch_product_by_id(product_id)
+      set_error_message(null)
+
+      if (!slug) {
+        set_error_message('잘못된 상품 경로입니다.')
+        set_is_loading(false)
+        return
+      }
+
+      const data = await fetch_product_by_slug(slug)
+      if (!data) {
+        set_error_message('상품을 찾을 수 없습니다.')
+      }
       set_product(data)
       set_is_loading(false)
     }
+
     load_product()
-  }, [product_id])
+  }, [slug])
 
   // 상태 관리
   const [selected_date, set_selected_date] = useState<Date | null>(null)
@@ -45,7 +58,7 @@ export default function ProductDetailPage() {
   // 예약 제출
   const handle_reservation_submit = (data: ReservationData) => {
     console.log('예약 정보:', {
-      product_id,
+      product_id: product?.id,
       product_title: product?.title,
       date: selected_date?.toISOString(),
       ...data,
@@ -69,8 +82,8 @@ export default function ProductDetailPage() {
     )
   }
 
-  // 상품을 찾지 못한 경우
-  if (!product) {
+  // 상품을 찾지 못한 경우 또는 에러 발생
+  if (!product || error_message) {
     return (
       <div className="min-h-screen py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -79,7 +92,7 @@ export default function ProductDetailPage() {
               상품을 찾을 수 없습니다
             </h1>
             <p className="mt-4 text-zinc-600 dark:text-zinc-400">
-              요청하신 상품이 존재하지 않습니다.
+              {error_message || '요청하신 상품이 존재하지 않습니다.'}
             </p>
             <Link
               href="/products"

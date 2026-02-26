@@ -121,7 +121,7 @@ export function ProductCarousel() {
                 ₩{current_product.price.toLocaleString()}
               </div>
               <Link
-                href={`/products/${current_product.id}`}
+                href={`/products/${current_product.slug}`}
                 className="inline-flex items-center justify-center rounded-lg bg-zinc-900 px-6 py-3 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-200 transition-colors"
               >
                 자세히 보기

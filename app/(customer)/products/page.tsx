@@ -24,6 +24,7 @@ export default async function ProductsPage() {
             <ProductCard
               key={product.id}
               id={product.id}
+              slug={product.slug || ''}
               title={product.title}
               description={product.description}
               price={product.price}

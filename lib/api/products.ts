@@ -10,6 +10,7 @@ export interface Product {
   max_participants: number
   category: string
   image_url: string
+  slug?: string
   is_active: boolean
   admin_id: string
   created_at: string
@@ -44,7 +45,7 @@ export async function fetch_all_products(): Promise<Product[]> {
   }
 }
 
-// 단일 상품 조회
+// 단일 상품 조회 (ID 기반)
 export async function fetch_product_by_id(product_id: string): Promise<Product | null> {
   try {
     const { data, error } = await supabase
@@ -71,6 +72,37 @@ export async function fetch_product_by_id(product_id: string): Promise<Product |
     return null
   } catch (error) {
     console.error('fetch_product_by_id 에러:', error)
+    return null
+  }
+}
+
+// 단일 상품 조회 (slug 기반)
+export async function fetch_product_by_slug(slug: string): Promise<Product | null> {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('slug', slug)
+      .eq('is_active', true)
+      .single()
+
+    if (error) {
+      console.error('상품 조회 에러 (slug):', error.message)
+      return null
+    }
+
+    // 기본값 설정
+    if (data) {
+      return {
+        ...data,
+        rating: data.rating || 4.5,
+        review_count: data.review_count || 0,
+      }
+    }
+
+    return null
+  } catch (error) {
+    console.error('fetch_product_by_slug 에러:', error)
     return null
   }
 }

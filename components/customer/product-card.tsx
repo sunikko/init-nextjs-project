@@ -6,6 +6,7 @@ import { Star } from 'lucide-react'
 
 interface ProductCardProps {
   id: string
+  slug: string
   title: string
   description: string
   price: number
@@ -17,6 +18,7 @@ interface ProductCardProps {
 
 export function ProductCard({
   id,
+  slug,
   title,
   description,
   price,
@@ -26,7 +28,7 @@ export function ProductCard({
   review_count,
 }: ProductCardProps) {
   return (
-    <Link href={`/products/${id}`}>
+    <Link href={`/products/${slug}`}>
       <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950 hover:shadow-lg transition-shadow cursor-pointer h-full">
         {/* 이미지 섹션 */}
         <div className="relative w-full h-48 bg-zinc-100 dark:bg-zinc-900">
