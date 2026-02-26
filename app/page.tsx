@@ -1,9 +1,12 @@
 import Link from 'next/link'
 import { ProductCarousel } from '@/components/customer/product-carousel'
+import { ApiTestComponent } from '@/components/dev/api-test'
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-black dark:to-zinc-950">
+      {/* 개발용 API 테스트 패널 */}
+      <ApiTestComponent />
       {/* 헤더 네비게이션 */}
       <header className="border-b border-zinc-200 bg-white/50 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/50">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">

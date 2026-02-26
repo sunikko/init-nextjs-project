@@ -1,20 +1,33 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Star, ArrowLeft, MapPin, Users, Clock } from 'lucide-react'
 import { BookingCalendar } from '@/components/customer/booking-calendar'
 import { ReservationModal, type ReservationData } from '@/components/customer/reservation-modal'
-import { mock_products } from '@/lib/mock-data'
+import { fetch_product_by_id } from '@/lib/api/products'
 import { useParams } from 'next/navigation'
+import type { Product } from '@/lib/api/products'
 
 export default function ProductDetailPage() {
   const params = useParams()
   const product_id = params.productId as string
 
-  // 상품 찾기
-  const product = mock_products.find((p) => p.id === product_id)
+  // 상품 및 로딩 상태
+  const [product, set_product] = useState<Product | null>(null)
+  const [is_loading, set_is_loading] = useState(true)
+
+  // Supabase에서 상품 데이터 가져오기
+  useEffect(() => {
+    const load_product = async () => {
+      set_is_loading(true)
+      const data = await fetch_product_by_id(product_id)
+      set_product(data)
+      set_is_loading(false)
+    }
+    load_product()
+  }, [product_id])
 
   // 상태 관리
   const [selected_date, set_selected_date] = useState<Date | null>(null)
@@ -40,6 +53,20 @@ export default function ProductDetailPage() {
     alert(`예약이 완료되었습니다!\n총 가격: ₩${data.total_price.toLocaleString()}`)
     set_is_modal_open(false)
     set_selected_date(null)
+  }
+
+  // 로딩 중
+  if (is_loading) {
+    return (
+      <div className="min-h-screen py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-zinc-900 dark:border-zinc-50"></div>
+            <p className="mt-4 text-zinc-600 dark:text-zinc-400">상품을 불러오는 중...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   // 상품을 찾지 못한 경우

@@ -4,36 +4,68 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { mock_products } from '@/lib/mock-data'
-
-// 상품 carousel에 보여줄 상품들 선택 (처음 4개)
-const carousel_products = mock_products.slice(0, 4)
+import { fetch_all_products, type Product } from '@/lib/api/products'
 
 export function ProductCarousel() {
+  const [products, set_products] = useState<Product[]>([])
+  const [loading, set_loading] = useState(true)
   const [current_index, set_current_index] = useState(0)
+
+  // Supabase에서 상품 데이터 로드
+  useEffect(() => {
+    const load_products = async () => {
+      try {
+        const data = await fetch_all_products()
+        // 처음 4개만 사용
+        set_products(data.slice(0, 4))
+        set_loading(false)
+      } catch (error) {
+        console.error('상품 로드 에러:', error)
+        set_loading(false)
+      }
+    }
+
+    load_products()
+  }, [])
 
   // 자동 슬라이드 (3초 간격)
   useEffect(() => {
+    if (products.length === 0) return
+
     const interval = setInterval(() => {
-      set_current_index((prev) => (prev + 1) % carousel_products.length)
+      set_current_index((prev) => (prev + 1) % products.length)
     }, 3000)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [products])
 
   // 이전 상품으로 이동
   const handle_prev = () => {
-    set_current_index(
-      (prev) => (prev - 1 + carousel_products.length) % carousel_products.length
-    )
+    if (products.length === 0) return
+    set_current_index((prev) => (prev - 1 + products.length) % products.length)
   }
 
   // 다음 상품으로 이동
   const handle_next = () => {
-    set_current_index((prev) => (prev + 1) % carousel_products.length)
+    if (products.length === 0) return
+    set_current_index((prev) => (prev + 1) % products.length)
   }
 
-  const current_product = carousel_products[current_index]
+  if (loading || products.length === 0) {
+    return (
+      <div className="w-full max-w-4xl mx-auto">
+        <div className="relative bg-white dark:bg-zinc-950 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-lg p-12">
+          <div className="text-center">
+            <p className="text-zinc-600 dark:text-zinc-400">
+              {loading ? '상품 로드 중...' : '상품이 없습니다'}
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const current_product = products[current_index]
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -71,19 +103,7 @@ export function ProductCarousel() {
               {current_product.description}
             </p>
 
-            {/* 별점과 리뷰 */}
-            <div className="flex items-center gap-4 mb-4">
-              <div className="flex items-center gap-1">
-                <span className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
-                  ⭐ {current_product.rating}
-                </span>
-                <span className="text-sm text-zinc-500 dark:text-zinc-500">
-                  ({current_product.review_count}개)
-                </span>
-              </div>
-            </div>
-
-            {/* 정보 (소요시간, 참여자) */}
+            {/* 소요 시간과 참여자 */}
             <div className="flex items-center gap-6 mb-6 text-sm text-zinc-600 dark:text-zinc-400">
               <div className="flex items-center gap-2">
                 <span>⏱️</span>
@@ -130,7 +150,7 @@ export function ProductCarousel() {
 
       {/* 도트 인디케이터 (현재 위치 표시) */}
       <div className="flex justify-center gap-2 mt-6">
-        {carousel_products.map((_, index) => (
+        {products.map((_, index) => (
           <button
             key={index}
             onClick={() => set_current_index(index)}
