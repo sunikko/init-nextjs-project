@@ -1,0 +1,33 @@
+# 🏗️ Architecture Rules
+
+## 헤더/푸터 관리
+- ✅ `components/common/header.tsx` — 모든 페이지에서 이것만 import
+- ✅ `components/common/footer.tsx` — 모든 페이지에서 이것만 import
+- ❌ layout.tsx / page.tsx에서 헤더 로직 직접 작성 금지
+- ❌ 헤더 컴포넌트 중복 생성 금지
+
+## 인증 상태 관리 (Zustand)
+- ✅ 인증 상태는 `store/auth-store.ts` 에서만 관리
+- ✅ 모든 컴포넌트는 `useAuthStore()`로 구독만 함
+- ❌ layout.tsx / page.tsx에서 `supabase.auth.getUser()` 직접 호출 금지
+- ❌ 컴포넌트 안에서 `onAuthStateChange()` 직접 등록 금지
+
+```typescript
+// ✅ 올바른 사용
+const { current_user, is_authenticated, sign_out } = useAuthStore()
+
+// ❌ 잘못된 사용 (page.tsx 안에서)
+const { data } = await supabase.auth.getUser()
+```
+
+## 레이아웃 책임
+```
+layout.tsx     → Header, Footer import 후 렌더링만
+header.tsx     → auth-store 구독, 세션 감시, 로그인 UI 렌더링
+auth-store.ts  → 로그인/로그아웃 로직, 세션 상태 관리
+```
+
+## URL 라우팅
+- 상품 상세: `/products/[slug]` (UUID 사용 금지)
+- slug 형식: 영문 소문자 + 하이픈 (`morning-yoga-class`)
+- API: `fetch_product_by_slug(slug)` 사용

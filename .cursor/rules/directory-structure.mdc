@@ -1,0 +1,70 @@
+# 📁 Directory Structure
+
+## Customer Pages
+```
+app/
+  page.tsx                              # 메인 (인덱스)
+  (auth)/
+    signup/page.tsx                     # 회원가입
+    login/page.tsx                      # 로그인
+  (customer)/
+    layout.tsx                          # 고객 레이아웃
+    products/page.tsx                   # 상품 리스트
+    products/[slug]/page.tsx            # 상품 상세 (캘린더 예약)
+    checkout/page.tsx                   # 결제
+```
+
+## Admin Pages
+```
+app/
+  (admin)/
+    layout.tsx
+    dashboard/page.tsx
+    dashboard/reservations/page.tsx
+    dashboard/payments/page.tsx
+    dashboard/statistics/page.tsx
+    products/page.tsx
+    products/new/page.tsx
+    products/[productId]/edit/page.tsx
+```
+
+## Components
+```
+components/
+  ui/                        # shadcn/ui
+  common/                    # ✅ 모든 페이지 공유 (header, footer)
+    header.tsx
+    footer.tsx
+  customer/                  # 고객용
+    product-card.tsx
+    product-carousel.tsx
+    booking-calendar.tsx
+    reservation-modal.tsx
+    payment-form.tsx
+  admin/                     # 어드민용
+    product-form.tsx
+    reservation-table.tsx
+    payment-table.tsx
+    stats-card.tsx
+  dev/                       # 개발용 (배포 시 제거)
+    api-test.tsx
+```
+
+## Store / Lib
+```
+store/
+  auth-store.ts              # 인증 상태 (여기서만!)
+  product-store.ts
+  booking-store.ts
+  admin-store.ts
+
+lib/
+  utils.ts
+  supabase.ts
+  mock-data.ts
+  api/
+    auth.ts
+    products.ts
+    reservations.ts
+    payments.ts
+```

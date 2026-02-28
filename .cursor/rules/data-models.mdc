@@ -1,0 +1,99 @@
+# 📊 Data Models
+
+## User
+```typescript
+{
+  id: string (UUID)
+  email: string (unique)
+  password: string (hashed)
+  name: string
+  phone: string
+  role: 'customer' | 'admin'
+  is_verified: boolean
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
+
+## Product
+```typescript
+{
+  id: string (UUID)
+  slug: string (unique)          // URL용: morning-yoga-class
+  title: string
+  description: string
+  price: decimal
+  duration: integer              // 분 단위
+  max_participants: integer
+  category: string
+  image_url: string
+  is_active: boolean
+  admin_id: string (UUID FK)
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
+
+## Availability
+```typescript
+{
+  id: string (UUID)
+  product_id: string (UUID FK)
+  date: date
+  time_slots: json[]             // [{start: '09:00', end: '10:00'}, ...]
+  available_count: integer
+  is_blocked: boolean
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
+
+## Reservation
+```typescript
+{
+  id: string (UUID)
+  product_id: string (UUID FK)
+  user_id: string (UUID FK)
+  reservation_date: date
+  time_slot: string              // '09:00-10:00'
+  participant_count: integer
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+  special_request: text
+  total_price: decimal
+  created_at: timestamp
+  confirmed_at: timestamp | null
+  cancelled_at: timestamp | null
+  updated_at: timestamp
+}
+```
+
+## Payment
+```typescript
+{
+  id: string (UUID)
+  reservation_id: string (UUID FK)
+  user_id: string (UUID FK)
+  amount: decimal
+  payment_method: 'card' | 'bank_transfer' | 'paypal'
+  transaction_id: string
+  status: 'pending' | 'completed' | 'failed' | 'refunded'
+  paid_at: timestamp | null
+  refunded_at: timestamp | null
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
+
+## Review
+```typescript
+{
+  id: string (UUID)
+  product_id: string (UUID FK)
+  user_id: string (UUID FK)
+  reservation_id: string (UUID FK)
+  rating: integer (1-5)
+  comment: text
+  created_at: timestamp
+  updated_at: timestamp
+}
+```
