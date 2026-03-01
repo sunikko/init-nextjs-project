@@ -9,6 +9,7 @@ import { ReservationModal, type ReservationData } from '@/components/customer/re
 import { fetch_product_by_slug } from '@/lib/api/products'
 import { useParams } from 'next/navigation'
 import type { Product } from '@/lib/api/products'
+import { format_currency } from '@/lib/utils'
 
 export default function ProductDetailPage() {
   const params = useParams()
@@ -172,7 +173,7 @@ export default function ProductDetailPage() {
                   </span>
                 </div>
                 <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-                  {product.duration}분
+                  {product.duration} min
                 </p>
               </div>
 
@@ -184,7 +185,8 @@ export default function ProductDetailPage() {
                   </span>
                 </div>
                 <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-                  {product.max_participants}명
+                  {product.max_participants}{' '}
+                  {product.max_participants === 1 ? 'person' : 'people'}
                 </p>
               </div>
 
@@ -193,7 +195,7 @@ export default function ProductDetailPage() {
                   Price Per Person
                 </span>
                 <p className="text-2xl font-bold text-blue-900 dark:text-blue-50">
-                  ₩{product.price.toLocaleString()}
+                  {format_currency(product.price)}
                 </p>
               </div>
             </div>
@@ -205,7 +207,7 @@ export default function ProductDetailPage() {
               </p>
               <p className="text-5xl font-bold text-zinc-900 dark:text-zinc-50">
                 {selected_date ? (
-                  <>₩{product.price.toLocaleString()}</>
+                  <>{format_currency(product.price)}</>
                 ) : (
                   <>Select a date</>
                 )}
@@ -224,6 +226,7 @@ export default function ProductDetailPage() {
             <BookingCalendar
               on_date_select={set_selected_date}
               selected_date={selected_date}
+              locale="en-GB"
             />
           </div>
 
@@ -251,7 +254,7 @@ export default function ProductDetailPage() {
                 </p>
                 <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
                   {selected_date
-                    ? selected_date.toLocaleDateString('en-US', {
+                    ? selected_date.toLocaleDateString('en-GB', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',

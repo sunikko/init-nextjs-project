@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { fetch_all_products, type Product } from '@/lib/api/products'
+import { format_currency } from '@/lib/utils'
 
 export function ProductCarousel() {
   const [products, set_products] = useState<Product[]>([])
@@ -118,7 +119,7 @@ export function ProductCarousel() {
             {/* 가격과 버튼 */}
             <div className="flex items-center justify-between">
               <div className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-                ₩{current_product.price.toLocaleString()}
+                {format_currency(current_product.price)}
               </div>
               <Link
                 href={`/products/${current_product.slug}`}

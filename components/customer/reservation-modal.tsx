@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { X } from 'lucide-react'
+import { format_currency } from '@/lib/utils'
 
 interface ReservationModalProps {
   is_open: boolean
@@ -90,7 +91,7 @@ export function ReservationModal({
                 Booking Date
               </label>
               <p className="text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900 rounded-lg p-3">
-                {selected_date.toLocaleDateString('en-US', {
+                {selected_date.toLocaleDateString('en-GB', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -155,10 +156,11 @@ export function ReservationModal({
             <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-900 p-4">
               <div className="flex items-center justify-between">
                 <span className="text-zinc-600 dark:text-zinc-400">
-                  ₩{price.toLocaleString()} × {participant_count}명
+                  {format_currency(price)} × {participant_count}{' '}
+                  {participant_count === 1 ? 'person' : 'people'}
                 </span>
                 <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-                  ₩{total_price.toLocaleString()}
+                  {format_currency(total_price)}
                 </span>
               </div>
             </div>

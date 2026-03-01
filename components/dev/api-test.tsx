@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { fetch_all_products } from '@/lib/api/products'
+import { fetch_all_products, type Product } from '@/lib/api/products'
+import { format_currency } from '@/lib/utils'
 
 /**
  * 개발용 API 테스트 컴포넌트
@@ -14,7 +15,7 @@ import { fetch_all_products } from '@/lib/api/products'
 
 export function ApiTestComponent() {
   const [loading, set_loading] = useState(false)
-  const [result, set_result] = useState<any>(null)
+  const [result, set_result] = useState<Product[] | null>(null)
   const [error, set_error] = useState<string | null>(null)
 
   // API 테스트 실행
@@ -77,11 +78,10 @@ export function ApiTestComponent() {
               ✅ 조회 성공 ({result.length}개)
             </p>
             <div className="text-xs text-green-600 dark:text-green-300 max-h-40 overflow-y-auto">
-              {result.map((product: any, idx: number) => (
+              {result.map((product: Product, idx: number) => (
                 <div key={idx} className="mb-2 p-2 bg-white dark:bg-zinc-900 rounded">
                   <p>
-                    <span className="font-semibold">{product.title}</span> - ₩
-                    {product.price.toLocaleString()}
+                    <span className="font-semibold">{product.title}</span> - {format_currency(product.price)}
                   </p>
                   <p className="text-xs opacity-70">{product.category}</p>
                 </div>

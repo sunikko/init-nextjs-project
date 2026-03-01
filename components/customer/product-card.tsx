@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Star } from 'lucide-react'
+import { format_currency } from '@/lib/utils'
 
 interface ProductCardProps {
   id: string
@@ -71,10 +72,10 @@ export function ProductCard({
           <div className="mt-4 pt-4 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
               <span>⏱️</span>
-              <span>{duration}분</span>
+              <span>{duration} min</span>
             </div>
             <div className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
-              ₩{price.toLocaleString()}
+              {format_currency(price)}
             </div>
           </div>
         </div>

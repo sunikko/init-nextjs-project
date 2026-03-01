@@ -6,9 +6,10 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 interface BookingCalendarProps {
   on_date_select: (date: Date) => void
   selected_date: Date | null
+  locale?: string
 }
 
-export function BookingCalendar({ on_date_select, selected_date }: BookingCalendarProps) {
+export function BookingCalendar({ on_date_select, selected_date, locale = 'en-GB' }: BookingCalendarProps) {
   const [current_month, set_current_month] = useState(new Date())
 
   // 현재 월의 모든 날짜 배열 생성
@@ -65,8 +66,10 @@ export function BookingCalendar({ on_date_select, selected_date }: BookingCalend
   }
 
   const days = get_days_in_month(current_month)
-  const month_name = current_month.toLocaleDateString('ko-KR', { month: 'long', year: 'numeric' })
-  const day_names = ['일', '월', '화', '수', '목', '금', '토']
+  const month_name = current_month.toLocaleDateString(locale, { month: 'long', year: 'numeric' })
+  const day_names = Array.from({ length: 7 }, (_, i) =>
+    new Date(2021, 7, 1 + i).toLocaleDateString(locale, { weekday: 'short' })
+  )
 
   return (
     <div className="bg-white dark:bg-zinc-950 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
@@ -132,7 +135,7 @@ export function BookingCalendar({ on_date_select, selected_date }: BookingCalend
         <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-900">
           <p className="text-sm text-blue-900 dark:text-blue-200">
             <span className="font-semibold">Selected Date:</span>{' '}
-            {selected_date.toLocaleDateString('en-US', {
+            {selected_date.toLocaleDateString(locale, {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
