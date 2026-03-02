@@ -12,12 +12,14 @@ interface ReservationModalProps {
   max_participants: number
   price: number
   on_submit: (data: ReservationData) => void
+  time_slots?: Array<{ time: string; available: number }>
 }
 
 export interface ReservationData {
   participant_count: number
   special_request: string
   total_price: number
+  time_slot: string
 }
 
 export function ReservationModal({
@@ -28,9 +30,13 @@ export function ReservationModal({
   max_participants,
   price,
   on_submit,
+  time_slots = [],
 }: ReservationModalProps) {
   const [participant_count, set_participant_count] = useState(1)
   const [special_request, set_special_request] = useState('')
+  const [time_slot, set_time_slot] = useState<string>(
+    (time_slots.find((s) => s.available > 0)?.time) || ''
+  )
 
   // 총 가격 계산
   const total_price = price * participant_count
@@ -42,6 +48,7 @@ export function ReservationModal({
       participant_count,
       special_request,
       total_price,
+      time_slot,
     })
   }
 
@@ -99,6 +106,48 @@ export function ReservationModal({
                 })}
               </p>
             </div>
+
+            {/* 시간 선택 */}
+            <div>
+              <label htmlFor="time-slot" className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
+                Time Slot
+              </label>
+              <select
+                id="time-slot"
+                value={time_slot}
+                onChange={(e) => set_time_slot(e.target.value)}
+                className="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-zinc-900 dark:text-zinc-50"
+              >
+                {time_slots.length === 0 ? (
+                  <option value="">No available time slots</option>
+                ) : (
+                  time_slots.map((slot) => {
+                    const label =
+                      slot.available > 0
+                        ? `${slot.time} (${slot.available} left)`
+                        : `${slot.time} (Fully booked)`
+                    return (
+                      <option key={slot.time} value={slot.time} disabled={slot.available === 0}>
+                        {label}
+                      </option>
+                    )
+                  })
+                )}
+              </select>
+            </div>
+
+            {/* 가용 좌석 안내 */}
+            {time_slot && (
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 -mt-2">
+                {(() => {
+                  const current = time_slots.find((s) => s.time === time_slot)
+                  if (!current) return ''
+                  return current.available >= participant_count
+                    ? `${current.available} seats available`
+                    : `Only ${current.available} seats left`
+                })()}
+              </p>
+            )}
 
             {/* 참여자 수 */}
             <div>

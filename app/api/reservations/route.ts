@@ -39,6 +39,58 @@ export async function POST(request: Request) {
 
     const admin = createClient(supabase_url, service_key)
 
+    // Load availability
+    const { data: avail_row, error: avail_err } = await admin
+      .from('availability')
+      .select('id, time_slots')
+      .eq('product_id', product_id)
+      .eq('date', reservation_date)
+      .single()
+
+    if (avail_err) {
+      return NextResponse.json(
+        { success: false, message: 'Availability not found' },
+        { status: 400 }
+      )
+    }
+
+    const slots: Array<{ time: string; available: number }> =
+      (avail_row?.time_slots as Array<{ time: string; available: number }>) || []
+    const idx = slots.findIndex((s) => s.time === time_slot)
+    if (idx === -1) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid time slot' },
+        { status: 400 }
+      )
+    }
+    if (slots[idx].available < participant_count) {
+      return NextResponse.json(
+        { success: false, message: 'Time slot fully booked' },
+        { status: 409 }
+      )
+    }
+
+    // Decrement availability
+    const updated_slots = [...slots]
+    updated_slots[idx] = {
+      ...updated_slots[idx],
+      available: updated_slots[idx].available - participant_count,
+    }
+
+    const { error: update_err } = await admin
+      .from('availability')
+      .update({ time_slots: updated_slots })
+      .eq('product_id', product_id)
+      .eq('date', reservation_date)
+
+    if (update_err) {
+      return NextResponse.json(
+        { success: false, message: update_err.message },
+        { status: 400 }
+      )
+    }
+
+    // Insert reservation
     const { data, error } = await admin
       .from('reservations')
       .insert([

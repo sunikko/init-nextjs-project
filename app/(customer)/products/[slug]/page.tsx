@@ -47,7 +47,26 @@ export default function ProductDetailPage() {
   // 상태 관리
   const [selected_date, set_selected_date] = useState<Date | null>(null)
   const [is_modal_open, set_is_modal_open] = useState(false)
-  const default_time_slots = ['09:00', '11:00', '13:00', '15:00', '17:00']
+  const [time_slots, set_time_slots] = useState<Array<{ time: string; available: number }>>([])
+
+  // 날짜 선택 시 가용 시간 조회
+  useEffect(() => {
+    const fetch_availability = async () => {
+      if (!product || !selected_date) {
+        set_time_slots([])
+        return
+      }
+      const date = selected_date.toISOString().slice(0, 10)
+      const res = await fetch(`/api/availability?product_id=${product.id}&date=${date}`)
+      const json = await res.json()
+      if (json?.success) {
+        set_time_slots(json.time_slots || [])
+      } else {
+        set_time_slots([])
+      }
+    }
+    fetch_availability()
+  }, [product, selected_date])
 
   // 예약 모달 열기
   const handle_open_modal = () => {
@@ -338,7 +357,7 @@ export default function ProductDetailPage() {
           selected_date={selected_date}
           max_participants={product.max_participants}
           price={product.price}
-          time_slots={default_time_slots}
+          time_slots={time_slots}
           on_submit={handle_reservation_submit}
         />
       </div>
