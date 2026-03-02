@@ -10,6 +10,7 @@ import { fetch_product_by_slug } from '@/lib/api/products'
 import { useParams } from 'next/navigation'
 import type { Product } from '@/lib/api/products'
 import { format_currency } from '@/lib/utils'
+import { supabase } from '@/lib/supabase'
 
 export default function ProductDetailPage() {
   const params = useParams()
@@ -46,6 +47,7 @@ export default function ProductDetailPage() {
   // 상태 관리
   const [selected_date, set_selected_date] = useState<Date | null>(null)
   const [is_modal_open, set_is_modal_open] = useState(false)
+  const default_time_slots = ['09:00', '11:00', '13:00', '15:00', '17:00']
 
   // 예약 모달 열기
   const handle_open_modal = () => {
@@ -57,16 +59,47 @@ export default function ProductDetailPage() {
   }
 
   // 예약 제출
-  const handle_reservation_submit = (data: ReservationData) => {
-    console.log('Reservation info:', {
-      product_id: product?.id,
-      product_title: product?.title,
-      date: selected_date?.toISOString(),
-      ...data,
-    })
-    alert(`Booking completed!\nTotal Price: ₩${data.total_price.toLocaleString()}`)
-    set_is_modal_open(false)
-    set_selected_date(null)
+  const handle_reservation_submit = async (data: ReservationData) => {
+    try {
+      // 유저 확인
+      const { data: auth_data } = await supabase.auth.getUser()
+      const user_id = auth_data.user?.id
+      if (!user_id || !product || !selected_date) {
+        alert('You must be logged in and select a date to book.')
+        return
+      }
+
+      // YYYY-MM-DD로 변환
+      const reservation_date = selected_date.toISOString().slice(0, 10)
+
+      // 서버 라우트로 예약 저장 (RLS 영향 없음)
+      const res = await fetch('/api/reservations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          product_id: product.id,
+          user_id,
+          reservation_date,
+          participant_count: data.participant_count,
+          total_price: data.total_price,
+          special_request: data.special_request || '',
+          time_slot: data.time_slot,
+        }),
+      })
+
+      const json = await res.json()
+      if (!res.ok || !json?.success) {
+        alert(`Failed to save booking: ${json?.message || 'Unknown error'}`)
+        return
+      }
+
+      alert(`Booking completed!\nTotal Price: ${format_currency(data.total_price)}`)
+      set_is_modal_open(false)
+      set_selected_date(null)
+    } catch (error) {
+      console.error('handle_reservation_submit error:', error)
+      alert('An unexpected error occurred.')
+    }
   }
 
   // 로딩 중
@@ -264,6 +297,16 @@ export default function ProductDetailPage() {
                 </p>
               </div>
 
+              {/* 시간 슬롯 */}
+              <div className="border-t border-zinc-200 dark:border-zinc-800 pt-4">
+                <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wide mb-1">
+                  Time Slot
+                </p>
+                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+                  {selected_date ? 'Select in the next step' : 'Not Selected'}
+                </p>
+              </div>
+
               {/* 예약 버튼 */}
               <button
                 onClick={handle_open_modal}
@@ -295,6 +338,7 @@ export default function ProductDetailPage() {
           selected_date={selected_date}
           max_participants={product.max_participants}
           price={product.price}
+          time_slots={default_time_slots}
           on_submit={handle_reservation_submit}
         />
       </div>
